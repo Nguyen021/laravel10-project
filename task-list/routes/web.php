@@ -15,4 +15,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('task.index');
+
+Route::get('/hello', function () {
+    return 'Hello Page';
+});
+
+Route::get('/greet/{name}', function ($name) {
+    return 'Hello' . $name . '!';
+});
+
+Route::get('/hallo', function () {
+    return redirect()->route('task.index');
+});
+
+Route::fallback(function () {
+    return 'Still got somewhere';
 });
