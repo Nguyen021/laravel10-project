@@ -3,7 +3,7 @@
 @section('content')
 <header>
     @if(isset($name))
-        <h5>This is index view code by {!! $name !!} - {{ $name }}  </h5>
+        <h5>This is index view code by  {{ $name }}  </h5>
     @else
         <h5>This is index view no name</h5>
     @endif
