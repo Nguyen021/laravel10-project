@@ -1,30 +1,37 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        @if(isset($name))
-            <h5>This is index view code by {{ $name }}</h5>
-        @else
-            <h5>This is index view no name</h5>
-        @endif
+@extends('layouts.app')
 
-    </header>
+@section('content')
+<header>
+    @if(isset($name))
+        <h5>This is index view code by {!! $name !!} - {{ $name }}  </h5>
+    @else
+        <h5>This is index view no name</h5>
+    @endif
 
-    <div>
-        @if(count($tasks))
-            @foreach($tasks as $task)
-                <div>
-                    <a href="{{ route('tasks.detail',['id'=>$task->id]) }}">{{ $task->title }}</a>
-                </div>
-            @endforeach
-        @endif
-    </div>
-</body>
-</html>
+</header>
+
+<div>
+    @if(isset($tasks))
+        @foreach($tasks as $task)
+            <div>
+                <a href="{{ route('tasks.detail',['id'=>$task->id]) }}">{{ $task->title }}</a>
+            </div>
+        @endforeach
+    @else
+        <div>No task here!</div>
+    @endif
+
+
+</div>
+<div>
+    @if(@isset($tasks))
+        @forelse($tasks as $task)
+            <div>{{ $task->title }}</div>
+        @empty
+            <div>There no task</div>
+        @endforelse
+    @else
+        <div>No here</div>
+    @endif
+</div>
+@endsection

@@ -12,17 +12,19 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 class Task
 {
     public function __construct(
-        public int $id,
-        public string $title,
-        public string $description,
+        public int     $id,
+        public string  $title,
+        public string  $description,
         public ?string $long_description,
-        public bool $completed,
-        public string $created_at,
-        public string $updated_at
-    ) {
+        public bool    $completed,
+        public string  $created_at,
+        public string  $updated_at
+    )
+    {
     }
 }
 
@@ -65,12 +67,15 @@ $tasks = [
     ),
 ];
 
-Route::get('/', function () use($tasks) {
-    return view('index',[
-        'name' => 'Duong Trung Nguyen',
+Route::get('/', function () {
+    return redirect()->route('task.index');
+});
+
+Route::get('/tasks', function () use ($tasks) {
+    return view('index', [
+        'name' => '<i> Nguyen Ne</i>',
         'tasks' => $tasks
     ]);
-
 })->name('task.index');
 
 Route::get('/hello', function () {
@@ -88,6 +93,13 @@ Route::get('/hallo', function () {
 Route::fallback(function () {
     return 'Still got somewhere';
 });
-Route::get('/tasks/{id}',function ($id) use ($tasks){
-    return view('detail');
-}) -> name('tasks.detail');
+Route::get('/tasks/{id}', function ($id) use ($tasks) {
+//    $tasks = array_search($id,array_column($tasks,'id'));
+    $task = collect($tasks)->firstWhere('id', $id);
+//    array_filter($tasks, function ($task) use ($id) {
+//        return $task->id === $id;
+//    });
+    if (!$task)
+        abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+    return view('detail', ['task' => $task]);
+})->name('tasks.detail');
