@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use App\Models\Task;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,7 @@ use Illuminate\Http\Response;
 |
 */
 
-class Task
+class Task1
 {
     public function __construct(
         public int     $id,
@@ -60,6 +61,8 @@ Route::fallback(function () {
     return 'Still got somewhere';
 });
 
+Route::view('/tasks/create', 'create')->name('tasks.create');
+
 Route::get('/tasks/{id}', function ($id) {
 //    $tasks = array_search($id,array_column($tasks,'id'));
 //    $task = collect($tasks)->firstWhere('id', $id);
@@ -74,12 +77,23 @@ Route::get('/tasks/{id}', function ($id) {
 //    if (!$task)
 //        abort(Response::HTTP_NOT_FOUND);
 
-    return view('detail', ['task' => \App\Models\Task::findOrFail($id)]);
-})->name('tasks.detail')->where('id', '<>', 'create');
+    return view('detail', ['task' => Task::findOrFail($id)]);
+})->name('tasks.detail');
 
-Route::view('/tasks/create', 'create')->name('tasks.create');
+
 
 Route::post('/tasks', function (\Illuminate\Http\Request $request) {
-    dd($request);
-    dd($request->all());
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'long_description' => 'required',
+    ]);
+
+    $task = new Task;
+    $task->title = $data['title'];
+    $task->description = $data['description'];
+    $task->long_description = $data['long_description'];
+    $task->save();
+
+    return redirect()->route('tasks.detail', ['id' => $task->id]) -> with('success','Task created Successfully! ');
 })->name('tasks.store');
