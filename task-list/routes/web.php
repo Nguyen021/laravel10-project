@@ -66,13 +66,20 @@ Route::get('/tasks/{id}', function ($id) {
 //    array_filter($tasks, function ($task) use ($id) {
 //        return $task->id === $id;
 //    });
-    $task = DB::table('tasks')
-        ->where('completed', true)
-        ->get();
-    $task = collect($task)->firstWhere('id', $id);
+//    $task = DB::table('tasks')
+//        ->where('completed', true)
+//        ->get();
+//    $task = collect($task)->firstWhere('id', $id);
 
 //    if (!$task)
 //        abort(Response::HTTP_NOT_FOUND);
 
     return view('detail', ['task' => \App\Models\Task::findOrFail($id)]);
-})->name('tasks.detail');
+})->name('tasks.detail')->where('id', '<>', 'create');
+
+Route::view('/tasks/create', 'create')->name('tasks.create');
+
+Route::post('/tasks', function (\Illuminate\Http\Request $request) {
+    dd($request);
+    dd($request->all());
+})->name('tasks.store');
