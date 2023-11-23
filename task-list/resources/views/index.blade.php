@@ -14,7 +14,7 @@
     @if(isset($tasks))
         @foreach($tasks as $task)
             <div>
-                <a href="{{ route('tasks.detail',['id'=>$task->id]) }}">{{ $task->title }}</a>
+                <a href="{{ route('tasks.detail',['task'=>$task->id]) }}">{{ $task->title }}</a>
             </div>
         @endforeach
     @else

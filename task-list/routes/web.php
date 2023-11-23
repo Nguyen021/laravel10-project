@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
 use App\Models\Task;
 use \Illuminate\Http\Request;
-
+use \App\Http\Requests\TaskRequest;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,7 +64,7 @@ Route::fallback(function () {
 
 Route::view('/tasks/create', 'create')->name('tasks.create');
 
-Route::get('/tasks/{id}', function ($id) {
+Route::get('/tasks/{task}', function (Task $task) {
 //    $tasks = array_search($id,array_column($tasks,'id'));
 //    $task = collect($tasks)->firstWhere('id', $id);
 //    array_filter($tasks, function ($task) use ($id) {
@@ -78,46 +78,39 @@ Route::get('/tasks/{id}', function ($id) {
 //    if (!$task)
 //        abort(Response::HTTP_NOT_FOUND);
 
-    return view('detail', ['task' => Task::findOrFail($id)]);
+    return view('detail', ['task' => $task]);
 })->name('tasks.detail');
 
 
-Route::post('/tasks', function (Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required',
-    ]);
+Route::post('/tasks', function (TaskRequest $request) {
+//    $data = $request->validated();
+//
+//    $task = new Task;
+//    $task->title = $data['title'];
+//    $task->description = $data['description'];
+//    $task->long_description = $data['long_description'];
+//    $task->save();
 
-    $task = new Task;
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-    $task->save();
-
-    return redirect()->route('tasks.detail', ['id' => $task->id])->with('success', 'Task created Successfully! ');
+    $task = Task::created($request->validated());
+    return redirect()->route('tasks.detail', ['task' => $task->id])->with('success', 'Task created Successfully! ');
 })->name('tasks.store');
 
 //Edit Task Session
 
-Route::get('/tasks/{id}/edit', function ($id) {
-    return view('edit', ['task' => Task::findOrFail($id)]);
+Route::get('/tasks/{task}/edit', function (Task $task) {
+    return view('edit', ['task' => $task]);
 })->name('tasks.edit');
 
-Route::put('/tasks/{id}/edit', function ($id, Request $request) {
+Route::put('/tasks/{task}/edit', function (Task $task, TaskRequest $request) {
 
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required',
-    ]);
+//    $data = $request->validated();
+//
+//    $task->title = $data['title'];
+//    $task->description = $data['description'];
+//    $task->long_description = $data['long_description'];
+//    $task->save();
+    $task->update($request->validated());
 
-    $task = Task::findOrFail($id);
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
-    $task->save();
-
-    return redirect()->route('tasks.detail', ['id' => $task->id])->with('success', 'Task updated Successfully!');
+    return redirect()->route('tasks.detail', ['task' => $task->id])->with('success', 'Task updated Successfully!');
 })->name('tasks.update');
 //End Edit Task Session
