@@ -17,21 +17,26 @@
                 <a href="{{ route('tasks.detail',['task'=>$task->id]) }}">{{ $task->title }}</a>
             </div>
         @endforeach
+            @if($tasks -> count())
+                <nav >{{ $tasks->links() }}</nav>
+            @endif
     @else
         <div>No task here!</div>
     @endif
 
 
 </div>
-<div>
-    @if(@isset($tasks))
-        @forelse($tasks as $task)
-            <div>{{ $task->title }}</div>
-        @empty
-            <div>There no task</div>
-        @endforelse
-    @else
-        <div>No here</div>
-    @endif
-</div>
+{{--<div>--}}
+{{--    @if(@isset($tasks))--}}
+{{--        @forelse($tasks as $task)--}}
+{{--            <div>{{ $task->title }}</div>--}}
+{{--        @empty--}}
+{{--            <div>There no task</div>--}}
+{{--        @endforelse--}}
+
+
+{{--    @else--}}
+{{--        <div>No here</div>--}}
+{{--    @endif--}}
+{{--</div>--}}
 @endsection

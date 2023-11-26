@@ -6,31 +6,7 @@ use Illuminate\Http\Response;
 use App\Models\Task;
 use \Illuminate\Http\Request;
 use \App\Http\Requests\TaskRequest;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-class Task1
-{
-    public function __construct(
-        public int     $id,
-        public string  $title,
-        public string  $description,
-        public ?string $long_description,
-        public bool    $completed,
-        public string  $created_at,
-        public string  $updated_at
-    )
-    {
-    }
-}
 
 Route::get('/', function () {
     return redirect()->route('task.index');
@@ -39,7 +15,7 @@ Route::get('/', function () {
 Route::get('/tasks', function () {
 //    $tasks = DB::select('select * from tasks where completed = ?', [true]);
 //    $tasks = \App\Models\Task::all();
-    $tasks = \App\Models\Task::latest()->where('completed', true)->get(); // call query builder
+    $tasks = Task::latest()->where('completed', true)->paginate(5);
     return view('index', [
         'name' => '<i> Nguyen Ne</i>',
         'tasks' => $tasks
