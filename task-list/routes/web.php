@@ -91,7 +91,7 @@ Route::post('/tasks', function (TaskRequest $request) {
 //    $task->long_description = $data['long_description'];
 //    $task->save();
 
-    $task = Task::created($request->validated());
+    $task = Task::create($request->validated());
     return redirect()->route('tasks.detail', ['task' => $task->id])->with('success', 'Task created Successfully! ');
 })->name('tasks.store');
 
@@ -114,3 +114,8 @@ Route::put('/tasks/{task}/edit', function (Task $task, TaskRequest $request) {
     return redirect()->route('tasks.detail', ['task' => $task->id])->with('success', 'Task updated Successfully!');
 })->name('tasks.update');
 //End Edit Task Session
+
+Route::delete('/tasks/{task}/delete',function (Task $task){
+    $task->delete();
+    return redirect()->route('task.index')->with('success','Deleted task!');
+})->name('tasks.delete');
