@@ -87,7 +87,8 @@ Route::put('/tasks/{task}/edit', function (Task $task, TaskRequest $request) {
 //    $task->save();
     $task->update($request->validated());
 
-    return redirect()->route('tasks.detail', ['task' => $task->id])->with('success', 'Task updated Successfully!');
+    return redirect()->route('tasks.detail', ['task' => $task->id])->
+    with('success', 'Task updated Successfully!');
 })->name('tasks.update');
 //End Edit Task Session
 
@@ -95,3 +96,8 @@ Route::delete('/tasks/{task}/delete',function (Task $task){
     $task->delete();
     return redirect()->route('task.index')->with('success','Deleted task!');
 })->name('tasks.delete');
+
+Route::put('/tasks/{task}/toggle-completed',function (Task $task){
+   $task->toggleComplete();
+    return redirect()->back()->with('success','Task updated successfully!');
+})->name('tasks.toggle-complete');

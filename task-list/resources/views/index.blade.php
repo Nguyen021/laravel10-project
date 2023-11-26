@@ -7,9 +7,10 @@
     @else
         <h5>This is index view no name</h5>
     @endif
-
 </header>
-
+<div>
+    <a href="{{ route('tasks.create') }}">Add New Task</a>
+</div>
 <div>
     @if(isset($tasks))
         @foreach($tasks as $task)
@@ -23,7 +24,6 @@
     @else
         <div>No task here!</div>
     @endif
-
 
 </div>
 {{--<div>--}}
