@@ -15,6 +15,7 @@
             @csrf
             @method('delete')
             <button type="submit">delete</button>
+            <a href="{{ route('tasks.edit',['task'=>$task->id]) }}" >Update</a>
         </form>
 {{--    </div>--}}
 @endsection
