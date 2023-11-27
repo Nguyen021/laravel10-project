@@ -1,25 +1,28 @@
 @extends('layouts.app')
 
+@section('header','The list of tasks')
+
 @section('content')
 <header>
-    @if(isset($name))
-        <h5>This is index view code by  {{ $name }}  </h5>
-    @else
-        <h5>This is index view no name</h5>
-    @endif
+{{--    @if(isset($name))--}}
+{{--        <h5>This is index view code by  {{ $name }}  </h5>--}}
+{{--    @else--}}
+{{--        <h5>This is index view no name</h5>--}}
+{{--    @endif--}}
 </header>
-<div>
-    <a href="{{ route('tasks.create') }}">Add New Task</a>
-</div>
+<nav class="mb-4">
+    <a href="{{ route('tasks.create') }}" class="font-medium text-gray-700 decoration-pink-500 underline">Add New Task</a>
+</nav>
 <div>
     @if(isset($tasks))
         @foreach($tasks as $task)
             <div>
-                <a href="{{ route('tasks.detail',['task'=>$task->id]) }}">{{ $task->title }}</a>
+                <a href="{{ route('tasks.detail',['task'=>$task->id]) }}"
+                    @class(['text-gray-700','font-bold','line-through' => $task->completed]) >{{ $task->title }}</a>
             </div>
         @endforeach
             @if($tasks -> count())
-                <nav >{{ $tasks->links() }}</nav>
+                <nav class="mt-4">{{ $tasks->links() }}</nav>
             @endif
     @else
         <div>No task here!</div>

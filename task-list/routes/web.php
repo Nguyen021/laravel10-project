@@ -15,7 +15,7 @@ Route::get('/', function () {
 Route::get('/tasks', function () {
 //    $tasks = DB::select('select * from tasks where completed = ?', [true]);
 //    $tasks = \App\Models\Task::all();
-    $tasks = Task::latest()->where('completed', true)->paginate(5);
+    $tasks = Task::latest()->paginate(10);
     return view('index', [
         'name' => '<i> Nguyen Ne</i>',
         'tasks' => $tasks
