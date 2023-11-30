@@ -3,15 +3,6 @@
 
 @section('header',isset($task) ? 'Update Task':'Create New Task')
 
-{{--@section('styles')--}}
-{{--    <style>--}}
-{{--        .error-messages {--}}
-{{--            color: red;--}}
-{{--            font-size: 0.8rem;--}}
-{{--        }--}}
-{{--    </style>--}}
-{{--@endsection--}}
-
 @section('content')
     <form action="{{ isset($task)? route('tasks.update',['task'=>$task->id]): route('tasks.store') }}" method="post">
         @csrf
